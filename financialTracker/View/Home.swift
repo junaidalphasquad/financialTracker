@@ -6,24 +6,63 @@
 //
 
 import SwiftUI
+
+class StoreData: ObservableObject {
+    @Published var stores: [Store] = [
+        Store(name: "Al Fateh", items: [
+        Item(name: "Ice Cream", price: 650),
+        Item(name: "Walnut", price: 1400),
+        Item(name: "Candies", price: 100),
+        ]),
+        
+        Store(name: "Blouch Dry Fruit", items: [
+        Item(name: "Dates", price: 550)
+        ]),
+
+        Store(name: "Pan shop", items: [
+        Item(name: "String", price: 80),
+        Item(name: "Meetha Pan", price: 150),
+        ]),
+        Store(name: "Happy Toys", items: [
+        Item(name: "Remote Control Car", price: 5000),
+        Item(name: "Birthday Theme Pack", price: 3500),
+        ]),
+        // Add other stores here
+    ]
+
+    func addNewItem(storeIndex: Int, newItem: Item) {
+        stores[storeIndex].items.append(newItem)
+    }
+
+    func addNewStore(_ store: Store) {
+        stores.append(store)
+    }
+}
+
 struct Home: View {
-    @State var isItemListVisible: [Bool] = Array(repeating: false, count: Stores.count)
+    @ObservedObject var storeData = StoreData()
+        @State var isItemListVisible: [Bool] = []
+    init() {
+           // Initialize isItemListVisible based on the count of stores
+           self._isItemListVisible = State(initialValue: Array(repeating: false, count: storeData.stores.count))
+       }
     @State var newStoreName: String = ""
     @State var newItemName: String = ""
     @State var newItemPrice: String = ""
-    
+
     var body: some View {
-        VStack(spacing:0){
+        VStack(spacing: 0) {
             // Home View...
-            HStack(spacing: 10){
+            HStack(spacing: 10) {
                 Text("Financial Tracker")
                     .font(.system(size: 28, weight: .bold))
                     .foregroundColor(.white)
+            }
+            .padding()
+            .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
 
-            }.padding()
-                .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
             // Form to add new stores and items
-            HStack(){
+            HStack() {
                 Form {
                     Section(header: Text("Add a New Store")) {
                         TextField("Store Name", text: $newStoreName)
@@ -33,59 +72,43 @@ struct Home: View {
                             Text("Add Store")
                         }
                     }
-                } .padding(15)
-            }.background(Color.black)
-              
-                
+                }
+                .padding(15)
+            }
+            .background(Color.black)
+
             // Existing store list
-                       ScrollView(.vertical, showsIndicators: false) {
-                           ForEach(Stores.indices, id: \.self) { index in
-                               let store = Stores[index]
-                               StoreView(store: store, isItemListVisible: $isItemListVisible[index],
-                                        newItemName: $newItemName,
-                                         newItemPrice: $newItemPrice,
-                                         addNewItem: addNewItem ,
-                                         index: index
-                               )
-                                   .padding(.vertical, 6)
-                                   .frame(maxWidth: .infinity)
-                           }
-                       }
-                   }
+            ScrollView(.vertical, showsIndicators: false) {
+                ForEach(storeData.stores.indices, id: \.self) { index in
+                    let store = storeData.stores[index]
+                    StoreView(store: store, isItemListVisible: $isItemListVisible[index], storeIndex: index, storeData: storeData)
+                        .padding(.vertical, 6)
+                        .frame(maxWidth: .infinity)
+                }
+            }
+        }
         .frame(width: getRect().width, height: getRect().height, alignment: .leading)
         .background(Color(.systemGray).ignoresSafeArea())
     }
-    
+
     func addNewStore() {
-           if !newStoreName.isEmpty {
-               let newStore = Store(name: newStoreName, items: [])
-               Stores.append(newStore)
-               isItemListVisible.append(false)
-               newStoreName = ""
-           }
-       }
-    
-    func addNewItem(_ index: Int) -> Void {
-        print("index",index)
-           if !newItemName.isEmpty, let price = Int(newItemPrice) {
-               let newItem = Item(name: newItemName, price: price)
-               Stores[index].items.append(newItem)
-               isItemListVisible.append(true)
-               newItemName = ""
-               newItemPrice = ""
-           }
-       }
+        if !newStoreName.isEmpty {
+            let newStore = Store(name: newStoreName, items: [])
+            storeData.addNewStore(newStore)
+            isItemListVisible.append(false)
+            newStoreName = ""
+        }
+    }
 }
 
 struct StoreView: View {
     var store: Store
-      @Binding var isItemListVisible: Bool
-      @Binding var newItemName: String
-      @Binding var newItemPrice: String
-    var addNewItem: (Int) -> Void
-    var index: Int
+    @Binding var isItemListVisible: Bool
+    @State private var newItemName: String = ""
+    @State private var newItemPrice: String = ""
+    var storeIndex: Int
+    @ObservedObject var storeData: StoreData
 
-    
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
@@ -116,34 +139,45 @@ struct StoreView: View {
 
             if isItemListVisible {
                 ItemListView(Items: store.items)
+                    .padding()
+
+                HStack() {
+                    Form {
+                        Section(header: Text("Add a New Item")) {
+                            TextField("Item Name", text: $newItemName)
                                 .padding()
-                            
-                            HStack(){
-                                Form {
-                                    Section(header: Text("Add a New Item")) {
-                                        TextField("Item Name", text: $newItemName)
-                                            .padding()
-                                        TextField("Item Price", text: $newItemPrice)
-                                            .padding()
-                                        Button(action: {
-                                            addNewItem(index)
-                                        }) {
-                                            Text("Add Item")
-                                        }
-                                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                                        .padding(6)
-                                    }
-                                } .padding(15)
-                            }.background(Color.black)
-                            // Add item input fields and button
+                            TextField("Item Price", text: $newItemPrice)
+                                .padding()
+                            Button(action: {
+                                addNewItem()
+                            }) {
+                                Text("Add Item")
+                            }
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                            .padding(6)
                         }
+                    }
+                    .padding(15)
+                }
+                .background(Color.black)
+                // Add item input fields and button
+            }
+        }
+    }
+
+    func addNewItem() {
+        if !newItemName.isEmpty, let price = Int(newItemPrice) {
+            let newItem = Item(name: newItemName, price: price)
+            storeData.addNewItem(storeIndex: storeIndex, newItem: newItem)
+            newItemName = ""
+            newItemPrice = ""
         }
     }
 }
 
 struct ItemListView: View {
     var Items: [Item]
-   
+
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             ForEach(Array(Items.enumerated()), id: \.offset) { enumeratedItem in
@@ -163,7 +197,7 @@ struct ItemListView: View {
             }
 
             Divider().background(Color.gray)
-          
+
             HStack() {
                 Text("Total")
                     .font(.system(size: 14, weight: .bold))
@@ -182,11 +216,13 @@ struct ItemListView: View {
 }
 
 extension View {
-    func getRect()->CGRect{
+    func getRect() -> CGRect {
         return NSScreen.main!.visibleFrame
     }
 }
 
-#Preview {
-    Home()
+struct Home_Previews: PreviewProvider {
+    static var previews: some View {
+        Home()
+    }
 }

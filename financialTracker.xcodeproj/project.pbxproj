@@ -14,6 +14,8 @@
 		392B02F22ACA199200072519 /* financialTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B02F12ACA199200072519 /* financialTrackerTests.swift */; };
 		392B02FC2ACA199200072519 /* financialTrackerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B02FB2ACA199200072519 /* financialTrackerUITests.swift */; };
 		392B02FE2ACA199200072519 /* financialTrackerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B02FD2ACA199200072519 /* financialTrackerUITestsLaunchTests.swift */; };
+		392B030D2ACA1AD600072519 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B030C2ACA1AD600072519 /* Home.swift */; };
+		392B03122ACA30E800072519 /* Entries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392B03112ACA30E800072519 /* Entries.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +38,7 @@
 /* Begin PBXFileReference section */
 		392B02DC2ACA199000072519 /* financialTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = financialTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		392B02DF2ACA199000072519 /* financialTrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = financialTrackerApp.swift; sourceTree = "<group>"; };
-		392B02E12ACA199000072519 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		392B02E12ACA199000072519 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; usesTabs = 0; };
 		392B02E32ACA199100072519 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		392B02E52ACA199100072519 /* financialTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = financialTracker.entitlements; sourceTree = "<group>"; };
 		392B02E72ACA199100072519 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -45,6 +47,8 @@
 		392B02F72ACA199200072519 /* financialTrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = financialTrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		392B02FB2ACA199200072519 /* financialTrackerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = financialTrackerUITests.swift; sourceTree = "<group>"; };
 		392B02FD2ACA199200072519 /* financialTrackerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = financialTrackerUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		392B030C2ACA1AD600072519 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		392B03112ACA30E800072519 /* Entries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entries.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +99,8 @@
 		392B02DE2ACA199000072519 /* financialTracker */ = {
 			isa = PBXGroup;
 			children = (
+				392B030E2ACA304100072519 /* Modal */,
+				392B030B2ACA1AAC00072519 /* View */,
 				392B02DF2ACA199000072519 /* financialTrackerApp.swift */,
 				392B02E12ACA199000072519 /* ContentView.swift */,
 				392B02E32ACA199100072519 /* Assets.xcassets */,
@@ -127,6 +133,22 @@
 				392B02FD2ACA199200072519 /* financialTrackerUITestsLaunchTests.swift */,
 			);
 			path = financialTrackerUITests;
+			sourceTree = "<group>";
+		};
+		392B030B2ACA1AAC00072519 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				392B030C2ACA1AD600072519 /* Home.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		392B030E2ACA304100072519 /* Modal */ = {
+			isa = PBXGroup;
+			children = (
+				392B03112ACA30E800072519 /* Entries.swift */,
+			);
+			path = Modal;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,6 +282,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				392B02E22ACA199000072519 /* ContentView.swift in Sources */,
+				392B030D2ACA1AD600072519 /* Home.swift in Sources */,
+				392B03122ACA30E800072519 /* Entries.swift in Sources */,
 				392B02E02ACA199000072519 /* financialTrackerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
